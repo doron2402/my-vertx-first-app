@@ -46,7 +46,7 @@ public class MyFirstVerticle extends AbstractVerticle {
           .putHeader("content-type", "text/html")
           .end("<h1>Hello from my first Vert.x 3 application</h1>");
     });
-
+    router.get("/api/doron").handler(this::getDoron);
     router.route("/assets/*").handler(StaticHandler.create("assets"));
 
     router.get("/api/whiskies").handler(this::getAll);
@@ -135,6 +135,12 @@ public class MyFirstVerticle extends AbstractVerticle {
       products.remove(idAsInteger);
     }
     routingContext.response().setStatusCode(204).end();
+  }
+  private void getDoron(RoutingContext routingContext) {
+    routingContext
+      .response()
+      .putHeader("content-type", "application/json; charset=utf-8")
+      .end(Json.encodePrettily("hi"));
   }
 
   private void getAll(RoutingContext routingContext) {
