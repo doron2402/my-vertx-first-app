@@ -4,11 +4,13 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.Json;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.StaticHandler;
+import java.util.HashMap;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -20,7 +22,7 @@ import java.util.Map;
 public class MyFirstVerticle extends AbstractVerticle {
 
   private Map<Integer, Whisky> products = new LinkedHashMap<>();
-
+  
   /**
    * This method is called when the verticle is deployed. It creates a HTTP server and registers a simple request
    * handler.
@@ -39,13 +41,14 @@ public class MyFirstVerticle extends AbstractVerticle {
     // Create a router object.
     Router router = Router.router(vertx);
 
-    // Bind "/" to our hello message.
+    // Routes
     router.route("/").handler(routingContext -> {
       HttpServerResponse response = routingContext.response();
       response
           .putHeader("content-type", "text/html")
           .end("<h1>Hello from my first Vert.x 3 application</h1>");
     });
+    
     router.get("/api/doron").handler(this::getDoron);
     router.route("/assets/*").handler(StaticHandler.create("assets"));
 
@@ -55,7 +58,9 @@ public class MyFirstVerticle extends AbstractVerticle {
     router.get("/api/whiskies/:id").handler(this::getOne);
     router.put("/api/whiskies/:id").handler(this::updateOne);
     router.delete("/api/whiskies/:id").handler(this::deleteOne);
-
+    
+    router.get("/api/restaurants/:id").handler(this::getRestaurantById);
+    router.get("/api/restaurants/:ids").handler(this::getRestaurantsByIds);
 
     // Create the HTTP server and pass the "accept" method to the request handler.
     vertx
@@ -64,7 +69,7 @@ public class MyFirstVerticle extends AbstractVerticle {
         .listen(
             // Retrieve the port from the configuration,
             // default to 8080.
-            config().getInteger("http.port", 8080),
+            config().getInteger("http.port", 3008),
             result -> {
               if (result.succeeded()) {
                 fut.complete();
@@ -159,4 +164,15 @@ public class MyFirstVerticle extends AbstractVerticle {
     products.put(talisker.getId(), talisker);
   }
 
+  private void getRestaurantById(RoutingContext routingContext) {
+      final String restuarant_id = routingContext.request().getParam("id");
+       JsonArray arr = new JsonArray();
+       
+
+  }
+  
+  private void getRestaurantsByIds(RoutingContext routingContext) {
+//      final String[] restuarants_ids = routingContext.request().getParam("ids");
+      
+  }
 }
