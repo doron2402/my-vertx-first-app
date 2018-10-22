@@ -11,12 +11,12 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-core</artifactId>
-      <version>3.0.0</version>
+      <version>3.5.0</version>
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-web</artifactId>
-      <version>3.0.0</version>
+      <version>3.5.3</version>
     </dependency>
 
     <!-- For the tests -->
@@ -106,9 +106,7 @@
                 Launch the application as in 'production' using the fatjar.
                 We pass the generated configuration, configuring the http port to the picked one
                 -->
-                <exec executable="${java.home}/bin/java"
-                      dir="${project.build.directory}"
-                      spawn="true">
+                <exec executable="${java.home}/bin/java" dir="${project.build.directory}" spawn="true">
                   <arg value="-jar"/>
                   <arg value="${project.artifactId}-${project.version}-fat.jar"/>
                   <arg value="-conf"/>
@@ -129,9 +127,7 @@
                 Finding the right process is a bit tricky. Windows command in in the windows profile (below)
                 -->
               <target>
-                <exec executable="bash"
-                      dir="${project.build.directory}"
-                      spawn="false">
+                <exec executable="bash" dir="${project.build.directory}" spawn="false">
                   <arg value="-c"/>
                   <arg value="ps ax | grep -i '${project.artifactId}' | awk 'NR==1{print $1}' | xargs kill -SIGTERM"/>
                 </exec>
@@ -212,9 +208,7 @@
                    </goals>
                    <configuration>
                      <target>
-                       <exec executable="wmic"
-                             dir="${project.build.directory}"
-                             spawn="false">
+                       <exec executable="wmic" dir="${project.build.directory}" spawn="false">
                          <arg value="process"/>
                          <arg value="where"/>
                          <arg value="CommandLine like '%${project.artifactId}%' and not name='wmic.exe'"/>
